@@ -995,10 +995,13 @@ class ListAttribute(Attribute):
         Decode from list of AttributeValue types.
         """
         deserialized_lst = []
-        for v in values:
-            class_for_deserialize = self.element_type() if self.element_type else _get_class_for_deserialize(v)
-            attr_value = _get_value_for_deserialize(v)
-            deserialized_lst.append(class_for_deserialize.deserialize(attr_value))
+        
+        if values:
+            for v in values:
+                class_for_deserialize = self.element_type() if self.element_type else _get_class_for_deserialize(v)
+                attr_value = _get_value_for_deserialize(v)
+                deserialized_lst.append(class_for_deserialize.deserialize(attr_value))
+                
         return deserialized_lst
 
 DESERIALIZE_CLASS_MAP = {
