@@ -977,15 +977,17 @@ class ListAttribute(Attribute):
         Encode the given list of objects into a list of AttributeValue types.
         """
         rval = []
-        for v in values:
-            attr_class = (self.element_type()
-                          if self.element_type
-                          else _get_class_for_serialize(v))
-            if attr_class.attr_type:
-                attr_key = ATTR_TYPE_MAP[attr_class.attr_type]
-            else:
-                attr_key = _get_key_for_serialize(v)
-            rval.append({attr_key: attr_class.serialize(v)})
+        
+        if values:
+            for v in values:
+                attr_class = (self.element_type()
+                              if self.element_type
+                              else _get_class_for_serialize(v))
+                if attr_class.attr_type:
+                    attr_key = ATTR_TYPE_MAP[attr_class.attr_type]
+                else:
+                    attr_key = _get_key_for_serialize(v)
+                rval.append({attr_key: attr_class.serialize(v)})
         return rval
 
     def deserialize(self, values):
